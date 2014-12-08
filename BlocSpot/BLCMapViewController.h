@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  BLCMapViewController.h
 //  BlocSpot
 //
 //  Created by Collin Adler on 12/4/14.
@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
-
+@interface BLCMapViewController : UIViewController
 
 @end
-
