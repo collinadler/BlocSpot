@@ -14,7 +14,6 @@
 		27220DC31A30F595009EC0D2 /* BLCMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27220DC21A30F595009EC0D2 /* BLCMapViewController.m */; };
 		27B58B4F1A328EE800285352 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 27B58B4E1A328EE700285352 /* Images.xcassets */; };
 		27B58B521A329E7500285352 /* BLCPOIListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27B58B511A329E7500285352 /* BLCPOIListTableViewController.m */; };
-		27B58B5B1A33CA4000285352 /* BLCSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27B58B5A1A33CA4000285352 /* BLCSearchViewController.m */; };
 		27B58B5E1A35731C00285352 /* BLCResultsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27B58B5D1A35731C00285352 /* BLCResultsTableViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -43,8 +42,6 @@
 		27B58B4E1A328EE700285352 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = BlocSpot/Images.xcassets; sourceTree = "<group>"; };
 		27B58B501A329E7500285352 /* BLCPOIListTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLCPOIListTableViewController.h; sourceTree = "<group>"; };
 		27B58B511A329E7500285352 /* BLCPOIListTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLCPOIListTableViewController.m; sourceTree = "<group>"; };
-		27B58B591A33CA4000285352 /* BLCSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLCSearchViewController.h; sourceTree = "<group>"; };
-		27B58B5A1A33CA4000285352 /* BLCSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLCSearchViewController.m; sourceTree = "<group>"; };
 		27B58B5C1A35731C00285352 /* BLCResultsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLCResultsTableViewController.h; sourceTree = "<group>"; };
 		27B58B5D1A35731C00285352 /* BLCResultsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLCResultsTableViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -94,6 +91,8 @@
 				27220D9C1A30E922009EC0D2 /* AppDelegate.h */,
 				27220D9D1A30E922009EC0D2 /* AppDelegate.m */,
 				27220DC01A30F56B009EC0D2 /* Controller */,
+				27B58B631A3654B300285352 /* View */,
+				27B58B5F1A36353500285352 /* Model */,
 				27220D981A30E922009EC0D2 /* Supporting Files */,
 			);
 			path = BlocSpot;
@@ -132,12 +131,24 @@
 				27220DC21A30F595009EC0D2 /* BLCMapViewController.m */,
 				27B58B501A329E7500285352 /* BLCPOIListTableViewController.h */,
 				27B58B511A329E7500285352 /* BLCPOIListTableViewController.m */,
-				27B58B591A33CA4000285352 /* BLCSearchViewController.h */,
-				27B58B5A1A33CA4000285352 /* BLCSearchViewController.m */,
 				27B58B5C1A35731C00285352 /* BLCResultsTableViewController.h */,
 				27B58B5D1A35731C00285352 /* BLCResultsTableViewController.m */,
 			);
 			name = Controller;
+			sourceTree = "<group>";
+		};
+		27B58B5F1A36353500285352 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		27B58B631A3654B300285352 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -247,7 +258,6 @@
 				27220DC31A30F595009EC0D2 /* BLCMapViewController.m in Sources */,
 				27B58B5E1A35731C00285352 /* BLCResultsTableViewController.m in Sources */,
 				27B58B521A329E7500285352 /* BLCPOIListTableViewController.m in Sources */,
-				27B58B5B1A33CA4000285352 /* BLCSearchViewController.m in Sources */,
 				27220D9B1A30E922009EC0D2 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

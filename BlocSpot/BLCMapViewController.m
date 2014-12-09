@@ -50,11 +50,6 @@
                                                                   action:@selector(listPressed:)];
     self.navigationItem.leftBarButtonItem = listButton;
     
-    _resultsTableController = [[BLCResultsTableViewController alloc] init];
-    
-    //we want to be the delegate for our filtered table so didSelectRowAtIndexPath is called for both tables
-    self.resultsTableController.tableView.delegate = self;
-    
     // Search is now just presenting a view controller. As such, normal view controller
     // presentation semantics apply. Namely that presentation will walk up the view controller
     // hierarchy until it finds the root view controller or one that defines a presentation context.
@@ -81,11 +76,17 @@
 //because we don't need the search controller until we press the search button, override the getter method to lazy load it when we press the nav button
 - (UISearchController *)searchController {
     if (!_searchController) {
+
+        _resultsTableController = [[BLCResultsTableViewController alloc] init];
         _searchController = [[UISearchController alloc] initWithSearchResultsController:self.resultsTableController];
         _searchController.searchResultsUpdater = self;
         _searchController.delegate = self;
         _searchController.dimsBackgroundDuringPresentation = YES;
         _searchController.searchBar.delegate = self;
+        
+        //we want to be the delegate for our filtered table so didSelectRowAtIndexPath is called for both tables
+        self.resultsTableController.tableView.delegate = self;
+
     }
     return _searchController;
 }
@@ -110,16 +111,27 @@
 
 #pragma mark - UISearchResultsUpdating Delegate
 
+//update the results array based on the searach text
 - (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
-
+    
+    MKLocalSearchRequest *request = [[MKLocalSearchRequest alloc] init];
+    request.naturalLanguageQuery = searchController.searchBar.text;
+    request.region = self.mapView.region; //this is an optional bounding geographic region, which we've set to the current mapview's region
+    
+    MKLocalSearch *search = [[MKLocalSearch alloc] initWithRequest:request];
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES; //show the activity indcator while searching
+    
+    [search startWithCompletionHandler:^(MKLocalSearchResponse *response, NSError *error) {
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        
+        BLCResultsTableViewController *tableController = (BLCResultsTableViewController *)self.searchController.searchResultsController;
+        tableController.mapSearchResults = response.mapItems;
+        [tableController.tableView reloadData];
+    }];
+    
 }
 
 @end
-
-
-
-
-
 
 
 

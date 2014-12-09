@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+static NSString *const kResultCellIdentifier = @"resultCellID";
+
 @interface BLCResultsTableViewController : UITableViewController
+
+@property (nonatomic, strong) NSArray *mapSearchResults;
 
 @end
