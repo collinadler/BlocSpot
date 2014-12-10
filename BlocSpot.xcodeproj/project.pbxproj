@@ -12,9 +12,10 @@
 		27220DB51A30E922009EC0D2 /* BlocSpotTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 27220DB41A30E922009EC0D2 /* BlocSpotTests.m */; };
 		27220DBF1A30ECC7009EC0D2 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27220DBE1A30ECC7009EC0D2 /* MapKit.framework */; };
 		27220DC31A30F595009EC0D2 /* BLCMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27220DC21A30F595009EC0D2 /* BLCMapViewController.m */; };
-		27B58B4F1A328EE800285352 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 27B58B4E1A328EE700285352 /* Images.xcassets */; };
 		27B58B521A329E7500285352 /* BLCPOIListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27B58B511A329E7500285352 /* BLCPOIListTableViewController.m */; };
 		27B58B5E1A35731C00285352 /* BLCResultsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27B58B5D1A35731C00285352 /* BLCResultsTableViewController.m */; };
+		27ECF0D91A37836100B2EEC2 /* BLCCustomAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 27ECF0D81A37836100B2EEC2 /* BLCCustomAnnotation.m */; };
+		27ECF0DB1A37902A00B2EEC2 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 27ECF0DA1A37902A00B2EEC2 /* Images.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,11 +40,13 @@
 		27220DBE1A30ECC7009EC0D2 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		27220DC11A30F595009EC0D2 /* BLCMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLCMapViewController.h; sourceTree = "<group>"; };
 		27220DC21A30F595009EC0D2 /* BLCMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLCMapViewController.m; sourceTree = "<group>"; };
-		27B58B4E1A328EE700285352 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = BlocSpot/Images.xcassets; sourceTree = "<group>"; };
 		27B58B501A329E7500285352 /* BLCPOIListTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLCPOIListTableViewController.h; sourceTree = "<group>"; };
 		27B58B511A329E7500285352 /* BLCPOIListTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLCPOIListTableViewController.m; sourceTree = "<group>"; };
 		27B58B5C1A35731C00285352 /* BLCResultsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLCResultsTableViewController.h; sourceTree = "<group>"; };
 		27B58B5D1A35731C00285352 /* BLCResultsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLCResultsTableViewController.m; sourceTree = "<group>"; };
+		27ECF0D71A37836100B2EEC2 /* BLCCustomAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLCCustomAnnotation.h; sourceTree = "<group>"; };
+		27ECF0D81A37836100B2EEC2 /* BLCCustomAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLCCustomAnnotation.m; sourceTree = "<group>"; };
+		27ECF0DA1A37902A00B2EEC2 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,7 +71,7 @@
 		27220D8C1A30E922009EC0D2 = {
 			isa = PBXGroup;
 			children = (
-				27B58B4E1A328EE700285352 /* Images.xcassets */,
+				27ECF0DA1A37902A00B2EEC2 /* Images.xcassets */,
 				27220DBE1A30ECC7009EC0D2 /* MapKit.framework */,
 				27220D971A30E922009EC0D2 /* BlocSpot */,
 				27220DB11A30E922009EC0D2 /* BlocSpotTests */,
@@ -140,6 +143,8 @@
 		27B58B5F1A36353500285352 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				27ECF0D71A37836100B2EEC2 /* BLCCustomAnnotation.h */,
+				27ECF0D81A37836100B2EEC2 /* BLCCustomAnnotation.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -236,7 +241,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				27B58B4F1A328EE800285352 /* Images.xcassets in Resources */,
+				27ECF0DB1A37902A00B2EEC2 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -257,6 +262,7 @@
 				27220D9E1A30E922009EC0D2 /* AppDelegate.m in Sources */,
 				27220DC31A30F595009EC0D2 /* BLCMapViewController.m in Sources */,
 				27B58B5E1A35731C00285352 /* BLCResultsTableViewController.m in Sources */,
+				27ECF0D91A37836100B2EEC2 /* BLCCustomAnnotation.m in Sources */,
 				27B58B521A329E7500285352 /* BLCPOIListTableViewController.m in Sources */,
 				27220D9B1A30E922009EC0D2 /* main.m in Sources */,
 			);

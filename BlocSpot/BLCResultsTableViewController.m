@@ -33,10 +33,6 @@
 
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return self.mapSearchResults.count;
-}
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:kResultCellIdentifier forIndexPath:indexPath];
@@ -48,20 +44,16 @@
     MKMapItem *item = self.mapSearchResults[indexPath.row];
     
     cell.textLabel.text = item.name;
-    cell.detailTextLabel.text = item.placemark.addressDictionary[@"Street"];
+    cell.detailTextLabel.text = item.placemark.addressDictionary[@"Street"]; //TODO: Fix this so that it shows
     
     return cell;
 }
 
-/*
-// Uncomment if you end up having multiple sections
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-#warning Incomplete method implementation.
-    // Return the number of rows in the section.
-    return 0;
+    return self.mapSearchResults.count;
 }
-*/
- 
+
+
 /*
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {

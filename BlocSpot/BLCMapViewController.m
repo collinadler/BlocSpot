@@ -12,6 +12,7 @@
 #import "BLCPOIListTableViewController.h"
 #import "BLCSearchViewController.h"
 #import "BLCResultsTableViewController.h"
+#import "BLCCustomAnnotation.h"
 
 @interface BLCMapViewController () <MKMapViewDelegate, UISearchResultsUpdating, UISearchBarDelegate, UISearchControllerDelegate, UITableViewDelegate>
 
@@ -24,7 +25,9 @@
 
 @end
 
-@implementation BLCMapViewController
+@implementation BLCMapViewController {
+    MKLocalSearchResponse *results;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -97,6 +100,19 @@
     [searchBar resignFirstResponder];
 }
 
+#pragma mark - UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [self.searchController setActive:NO];
+    
+    MKMapItem *item = results.mapItems[indexPath.row];
+    
+    BLCCustomAnnotation *customAnnotation = [[BLCCustomAnnotation alloc] initWithLocation:item.placemark.coordinate title:item.name];
+    [self.mapView addAnnotation:customAnnotation];
+    
+    [self.mapView setCenterCoordinate:customAnnotation.coordinate animated:YES];
+}
+
 #pragma mark - Navigation Buttons
 
 - (void) listPressed:(UIBarButtonItem *)sender {
@@ -124,26 +140,36 @@
     [search startWithCompletionHandler:^(MKLocalSearchResponse *response, NSError *error) {
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         
+        results = response;
+        
         BLCResultsTableViewController *tableController = (BLCResultsTableViewController *)self.searchController.searchResultsController;
         tableController.mapSearchResults = response.mapItems;
         [tableController.tableView reloadData];
     }];
+}
+
+#pragma mark - MapViewDelegate
+
+- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
     
+    if ([annotation isKindOfClass:[BLCCustomAnnotation class]]) { // if this is my custom annotation class
+        BLCCustomAnnotation *customAnnotation = (BLCCustomAnnotation *)annotation;
+        
+        MKAnnotationView *annotationView = [mapView dequeueReusableAnnotationViewWithIdentifier:@"MyCustomAnnotation"];
+        
+        if (annotationView == nil) {
+            //this calls the 'annotationView' method in our custom BLCCustomAnnotation class
+            annotationView = customAnnotation.annotationView;
+        } else {
+            annotationView.annotation = annotation;
+        }
+        return annotationView;
+    } else {
+        return nil;
+    }
 }
 
 @end
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
