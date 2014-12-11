@@ -13,6 +13,14 @@
 #import "BLCSearchViewController.h"
 #import "BLCResultsTableViewController.h"
 #import "BLCCustomAnnotation.h"
+#import "BLCPOIMapDetailView.h"
+#import "BLCPointOfInterest.h"
+#import "BLCDataSource.h"
+
+typedef NS_ENUM(NSInteger, BLCMapViewControllerState) {
+    BLCMapViewControllerStateMap,
+    BLCMapViewControllerStatePOIDetail
+};
 
 @interface BLCMapViewController () <MKMapViewDelegate, UISearchResultsUpdating, UISearchBarDelegate, UISearchControllerDelegate, UITableViewDelegate>
 
@@ -22,6 +30,10 @@
 @property (nonatomic, strong) BLCResultsTableViewController *resultsTableController;
 
 @property (nonatomic, strong) MKMapView *mapView;
+@property (nonatomic, strong) BLCPOIMapDetailView *popUpView;
+
+//create a state for the POI Detail View
+@property (nonatomic, assign) BLCMapViewControllerState state;
 
 @end
 
@@ -65,8 +77,36 @@
     self.mapView.region = region;
     self.mapView.showsPointsOfInterest = NO;
     self.mapView.delegate = self;
-        
+    
+    self.popUpView = [[BLCPOIMapDetailView alloc] init];
+    self.popUpView.layer.cornerRadius = 6;
+    
     [self.view addSubview:self.mapView];
+    [self.view addSubview:self.popUpView];
+    self.state = BLCMapViewControllerStateMap;
+}
+
+- (void) viewWillLayoutSubviews {
+    [self layoutViews];
+}
+
+- (void)layoutViews {
+    //places the custom POI detail view offscreen
+    CGFloat viewHeight = CGRectGetHeight(self.view.bounds);
+    CGFloat viewWidth = CGRectGetWidth(self.view.bounds);
+    CGFloat yOffset = 0.f;
+    CGFloat popUpWidth = CGRectGetWidth(self.view.bounds) * .75;
+    CGFloat popUpHeight = 180;
+    
+    switch (self.state) {
+        case BLCMapViewControllerStateMap: {
+            yOffset = viewHeight;
+        } break;
+        case BLCMapViewControllerStatePOIDetail: {
+            yOffset = CGRectGetMidY(self.view.bounds) - popUpHeight;
+        }  break;
+    }
+    self.popUpView.frame = CGRectMake((viewWidth / 2) - (popUpWidth / 2), yOffset, popUpWidth, popUpHeight);
 }
 
 - (void)didReceiveMemoryWarning {
@@ -94,6 +134,22 @@
     return _searchController;
 }
 
+- (void)setState:(BLCMapViewControllerState)state animated:(BOOL)animated {
+    _state = state;
+    if (animated) {
+        [UIView animateWithDuration:0.3
+                         animations:^{
+                             [self layoutViews];
+        }];
+    } else {
+        [self layoutViews];
+    }
+}
+
+- (void) setState:(BLCMapViewControllerState)state {
+    [self setState:state animated:NO];
+}
+
 #pragma mark - UISearchBarDelegate
 
 - (void) searchBarSearchButtonClicked:(UISearchBar *)searchBar {
@@ -105,9 +161,11 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [self.searchController setActive:NO];
     
-    MKMapItem *item = results.mapItems[indexPath.row];
+    BLCPointOfInterest *pointOfInterest = [[BLCPointOfInterest alloc] initWithMapItem:results.mapItems[indexPath.row]];
+//    [[BLCDataSource sharedInstance] addPointOfInterest:pointOfInterest];
     
-    BLCCustomAnnotation *customAnnotation = [[BLCCustomAnnotation alloc] initWithLocation:item.placemark.coordinate title:item.name];
+    BLCCustomAnnotation *customAnnotation = [[BLCCustomAnnotation alloc] initWithPointOfInterest:pointOfInterest];
+    
     [self.mapView addAnnotation:customAnnotation];
     
     [self.mapView setCenterCoordinate:customAnnotation.coordinate animated:YES];
@@ -167,6 +225,19 @@
     } else {
         return nil;
     }
+}
+
+- (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
+
+    //center mapview on the annotation
+    BLCCustomAnnotation *customAnnotation = (BLCCustomAnnotation *)view.annotation;
+    CLLocationCoordinate2D viewCoordinate = customAnnotation.coordinate;
+    self.mapView.centerCoordinate = viewCoordinate;
+        
+    //set the map detail view properties using the map detail view overrride setter
+    self.popUpView.poi = customAnnotation.poi;
+    
+    [self setState:BLCMapViewControllerStatePOIDetail animated:YES];
 }
 
 @end

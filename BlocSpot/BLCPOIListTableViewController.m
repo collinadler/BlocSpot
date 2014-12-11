@@ -8,6 +8,7 @@
 
 #import "BLCPOIListTableViewController.h"
 #import "BLCMapViewController.h"
+#import "BLCDataSource.h"
 
 @interface BLCPOIListTableViewController ()
 
@@ -57,6 +58,17 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    
+//    NSInteger numberOfSections = 0;
+//    if ([[BLCDataSource sharedInstance] favorites].count > 0) {
+//        numberOfSections++;
+//    }
+//    if ([[BLCDataSource sharedInstance] recents].count > 0) {
+//        numberOfSections++
+//    }
+//    
+//    return numberOfSections;
+    
 #warning Potentially incomplete method implementation.
     // Return the number of sections.
     return 0;

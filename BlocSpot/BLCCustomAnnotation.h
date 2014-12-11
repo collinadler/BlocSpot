@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <MapKit/MapKit.h>
+@class BLCPointOfInterest;
 
 @interface BLCCustomAnnotation : NSObject <MKAnnotation> {
     CLLocationCoordinate2D coordinate;
@@ -15,8 +16,9 @@
 
 @property (nonatomic, readonly) CLLocationCoordinate2D coordinate;
 @property (nonatomic, copy) NSString *title;
+@property (nonatomic, strong, readonly) BLCPointOfInterest *poi;
 
-- (id) initWithLocation:(CLLocationCoordinate2D)coord title:(NSString *)newTitle;
+- (id) initWithPointOfInterest:(BLCPointOfInterest *)pointOfInterest;
 
 - (MKAnnotationView *)annotationView;
 

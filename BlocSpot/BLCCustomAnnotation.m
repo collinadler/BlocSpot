@@ -7,15 +7,24 @@
 //
 
 #import "BLCCustomAnnotation.h"
+#import "BLCPointOfInterest.h"
+
+@interface BLCCustomAnnotation ()
+
+@property (nonatomic, strong) BLCPointOfInterest *poi;
+
+@end
 
 @implementation BLCCustomAnnotation
 @synthesize coordinate;
 
-- (id) initWithLocation:(CLLocationCoordinate2D)coord title:(NSString *)newTitle{
+- (id) initWithPointOfInterest:(BLCPointOfInterest *)pointOfInterest {
+    
     self = [super init];
     if (self) {
-        coordinate = coord;
-        _title = newTitle;
+        self.poi = pointOfInterest;
+        coordinate = pointOfInterest.coordinate;
+        _title = pointOfInterest.name;
     }
     return self;
 }
@@ -24,9 +33,8 @@
     MKAnnotationView *annotationView = [[MKAnnotationView alloc] initWithAnnotation:self reuseIdentifier:@"MyCustomAnnotation"];
     
     annotationView.enabled = YES;
-    annotationView.canShowCallout = YES;
-    annotationView.image = [UIImage imageNamed:@"red"];
-    annotationView.rightCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+    annotationView.canShowCallout = NO;
+    annotationView.image = [UIImage imageNamed:@"yellow"];
     
     return annotationView;
 }
