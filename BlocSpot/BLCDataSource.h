@@ -19,8 +19,14 @@
 // Recents
 - (void) addRecentPointOfInterest:(BLCPointOfInterest *)poi;
 
+// Archive methods
+- (void) archiveRecentPOIData;
+
+
 //publicly (to other classes), these will be a readonly properties (meaning there is not setter method)
 @property (nonatomic, strong, readonly) NSArray *recentPointsOfInterest;
 @property (nonatomic, strong, readonly) NSArray *favoritePointsOfInterest;
+
+
 
 @end

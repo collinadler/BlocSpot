@@ -107,6 +107,14 @@
     }
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    if (section == 0) {
+        return @"Recent Points of Interest";
+    } else {
+        return @"Favorite Points of Interest";
+    }
+}
+
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     BLCPointOfInterest *poi = [BLCDataSource sharedInstance].recentPointsOfInterest[indexPath.row];
     return [BLCRecentPOITableViewCell heightForRecentPOI:poi width:CGRectGetWidth(self.view.frame)];

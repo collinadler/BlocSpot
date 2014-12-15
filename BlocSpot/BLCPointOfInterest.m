@@ -24,4 +24,32 @@
 }
 
 
+#pragma mark - NSCoding
+
+- (instancetype) initWithCoder:(NSCoder *)aDecoder {
+    self = [super init];
+    
+    if (self) {
+        self.name = [aDecoder decodeObjectForKey:NSStringFromSelector(@selector(name))];
+        
+        double latitude = [aDecoder decodeDoubleForKey:@"latitude"];
+        double longitude = [aDecoder decodeDoubleForKey:@"longitude"];
+        self.coordinate = CLLocationCoordinate2DMake(latitude, longitude);
+        
+        self.visitedState = [aDecoder decodeBoolForKey:NSStringFromSelector(@selector(visitedState))];
+        self.note = [aDecoder decodeObjectForKey:NSStringFromSelector(@selector(note))];
+        self.category = [aDecoder decodeObjectForKey:NSStringFromSelector(@selector(category))];
+    }
+    return self;
+}
+
+- (void) encodeWithCoder:(NSCoder *)aCoder {
+    [aCoder encodeObject:self.name forKey:NSStringFromSelector(@selector(name))];
+    [aCoder encodeDouble:self.coordinate.latitude forKey:@"latitude"];
+    [aCoder encodeDouble:self.coordinate.longitude forKey:@"longitude"];
+    [aCoder encodeBool:self.visitedState forKey:NSStringFromSelector(@selector(visitedState))];
+    [aCoder encodeObject:self.note forKey:NSStringFromSelector(@selector(note))];
+    [aCoder encodeObject:self.category forKey:NSStringFromSelector(@selector(category))];
+}
+
 @end

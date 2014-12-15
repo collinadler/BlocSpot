@@ -17,6 +17,9 @@
 @property (nonatomic, strong, readwrite) NSArray *recentPointsOfInterest;
 @property (nonatomic, strong, readwrite) NSArray *favoritePointsOfInterest;
 
+//set this when data to archive has changed
+@property (nonatomic, assign) BOOL hasDataChanged;
+
 @end
 
 @implementation BLCDataSource
@@ -36,8 +39,27 @@
     
     self = [super init];
     if (self) {
+        
         self.recentPointsOfInterest = [NSMutableArray array];
         self.favoritePointsOfInterest = [NSMutableArray array];
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            NSString *fullPath = [self pathForFilename:NSStringFromSelector(@selector(recentPointsOfInterest))];
+            NSArray *storedRecentPOIs = [NSKeyedUnarchiver unarchiveObjectWithFile:fullPath];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (storedRecentPOIs.count > 0) {
+                    NSMutableArray *mutableRecentPOIs = [storedRecentPOIs mutableCopy];
+                    
+                    [self willChangeValueForKey:@"recentPointsOfInterest"];
+                    self.recentPointsOfInterest = mutableRecentPOIs;
+                    [self didChangeValueForKey:@"mediaItems"];
+                } else {
+                    // there was nothing saved, so initiate the normal sequence of getting data
+                    self.recentPointsOfInterest = [NSMutableArray array];
+                }
+            });
+        });
     }
     return self;
 }
@@ -46,12 +68,14 @@
 - (void) addRecentPointOfInterest:(BLCPointOfInterest *)poi {
     NSMutableArray *mutableArrayWithKVO = [self mutableArrayValueForKey:@"recentPointsOfInterest"];
     [mutableArrayWithKVO addObject:poi];
+    self.hasDataChanged = YES;
     NSLog(@"%@", self.recentPointsOfInterest);
 }
 
 - (void) addFavoritePointOfInterest:(BLCPointOfInterest *)poi {
     NSMutableArray *mutableArrayWithKVO = [self mutableArrayValueForKey:@"favoritePointsOfInterest"];
     [mutableArrayWithKVO addObject:poi];
+    self.hasDataChanged = YES;
 }
 
 #pragma mark - Key/Value Observing for recent POIs
@@ -112,6 +136,38 @@
 
 - (void) replaceObjectInFavoritePointsOfInterestAtIndex:(NSUInteger)index withObject:(id)object {
     [_favoritePointsOfInterest replaceObjectAtIndex:index withObject:object];
+}
+
+#pragma mark - NSKeyedArchiver
+
+- (void) archiveRecentPOIData {
+    if (self.hasDataChanged) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            NSUInteger numberOfItemsToSave = MIN(self.recentPointsOfInterest.count, 10);
+            NSArray *recentPOIsToSave = [self.recentPointsOfInterest subarrayWithRange:NSMakeRange(0, numberOfItemsToSave)];
+            
+            NSString *fullPath = [self pathForFilename:NSStringFromSelector(@selector(recentPointsOfInterest))];
+            //then save it as an NSData to the disk
+            NSData *recentPOIData = [NSKeyedArchiver archivedDataWithRootObject:recentPOIsToSave];
+            NSError *dataError;
+            // the two options ensures the complete file is save and encryts it, respecitvely
+            BOOL wroteSuccessfully = [recentPOIData writeToFile:fullPath options:NSDataWritingAtomic | NSDataWritingFileProtectionCompleteUnlessOpen error:&dataError];
+            
+            if (!wroteSuccessfully) {
+                NSLog(@"Couldn't write file: %@", dataError);
+            } else {
+                self.hasDataChanged = NO;
+            }
+        });
+    }
+}
+
+//method creates the full path to a file given a filename
+- (NSString *) pathForFilename:(NSString *) filename {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths firstObject];
+    NSString *dataPath = [documentsDirectory stringByAppendingPathComponent:filename];
+    return dataPath;
 }
 
 @end

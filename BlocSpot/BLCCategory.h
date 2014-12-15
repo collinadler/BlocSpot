@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-@interface BLCCategory : NSObject
+@interface BLCCategory : NSObject <NSCoding>
 
 @property (nonatomic, strong) NSString *objectId;
 @property (nonatomic, strong) NSString *categoryTitle;
