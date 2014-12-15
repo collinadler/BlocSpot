@@ -10,10 +10,12 @@
 #import "BLCPointOfInterest.h"
 
 @interface BLCDataSource () {
-    NSMutableArray *_pointOfInterestArray;
+    NSMutableArray *_recentPointsOfInterest;
+    NSMutableArray *_favoritePointsOfInterest;
 }
 
-@property (nonatomic, strong, readwrite) NSArray *pointOfInterestArray;
+@property (nonatomic, strong, readwrite) NSArray *recentPointsOfInterest;
+@property (nonatomic, strong, readwrite) NSArray *favoritePointsOfInterest;
 
 @end
 
@@ -30,39 +32,86 @@
     return sharedInstance;
 }
 
-- (void) addPointOfInterest:(BLCPointOfInterest *)pointOfInterest {
-    NSMutableArray *mutableArrayWithKVO = [self mutableArrayValueForKey:@"pointOfInterestArray"];
-    [mutableArrayWithKVO addObject:pointOfInterest];
+- (instancetype) init {
+    
+    self = [super init];
+    if (self) {
+        self.recentPointsOfInterest = [NSMutableArray array];
+        self.favoritePointsOfInterest = [NSMutableArray array];
+    }
+    return self;
 }
 
 
-#pragma mark - Key/Value Observing
+- (void) addRecentPointOfInterest:(BLCPointOfInterest *)poi {
+    NSMutableArray *mutableArrayWithKVO = [self mutableArrayValueForKey:@"recentPointsOfInterest"];
+    [mutableArrayWithKVO addObject:poi];
+    NSLog(@"%@", self.recentPointsOfInterest);
+}
+
+- (void) addFavoritePointOfInterest:(BLCPointOfInterest *)poi {
+    NSMutableArray *mutableArrayWithKVO = [self mutableArrayValueForKey:@"favoritePointsOfInterest"];
+    [mutableArrayWithKVO addObject:poi];
+}
+
+#pragma mark - Key/Value Observing for recent POIs
 
 //these methods will make the NSArray property key-value complianct (KVC)
-- (NSUInteger) countOfPointOfInterestArray {
-    return self.pointOfInterestArray.count;
+
+- (NSUInteger) countOfRecentPointsOfInterest {
+    return self.recentPointsOfInterest.count;
 }
 
-- (id) objectInPointOfInterestArrayAtIndex:(NSUInteger)index {
-    return [self.pointOfInterestArray objectAtIndex:index];
+- (id) objectInRecentPointsOfInterestAtIndex:(NSUInteger)index {
+    return [self.recentPointsOfInterest objectAtIndex:index];
 }
 
-- (NSArray *) pointOfInterestArrayAtIndexes:(NSIndexSet *)indexes {
-    return [self.pointOfInterestArray objectsAtIndexes:indexes];
+- (NSArray *) recentPointsOfInterestAtIndexes:(NSIndexSet *)indexes {
+    return [self.recentPointsOfInterest objectsAtIndexes:indexes];
 }
 
 //These are the mutable accessor methods - KVC methods which allow insertion and deletion of elements from the pointOfInterestArray
 
-- (void) insertObject:(BLCPointOfInterest *)object inPointOfInterestArrayAtIndex:(NSUInteger)index {
-    [_pointOfInterestArray insertObject:object atIndex:index];
+- (void) insertObject:(BLCPointOfInterest *)object inRecentPointsOfInterestAtIndex:(NSUInteger)index {
+    [_recentPointsOfInterest insertObject:object atIndex:index];
 }
 
-- (void) removeObjectFromPointOfInterestArrayAtIndex:(NSUInteger)index {
-    [_pointOfInterestArray removeObjectAtIndex:index];
+- (void) removeObjectFromRecentPointsOfInterestAtIndex:(NSUInteger)index {
+    [_recentPointsOfInterest removeObjectAtIndex:index];
 }
 
-- (void) replaceObjectInPointOfInterestArrayAtIndex:(NSUInteger)index withObject:(id)object {
-    [_pointOfInterestArray replaceObjectAtIndex:index withObject:object];
+- (void) replaceObjectInRecentPointsOfInterestAtIndex:(NSUInteger)index withObject:(id)object {
+    [_recentPointsOfInterest replaceObjectAtIndex:index withObject:object];
+}
+
+#pragma mark - Key/Value Observing for favorite POIs
+
+//these methods will make the NSArray property key-value complianct (KVC)
+
+- (NSUInteger) countOfFavoritePointsOfInterest {
+    return self.favoritePointsOfInterest.count;
+}
+
+- (id) objectInFavoritePointsOfInterestAtIndex:(NSUInteger)index {
+    return [self.favoritePointsOfInterest objectAtIndex:index];
+}
+
+- (NSArray *) favoritePointsOfInterestAtIndexes:(NSIndexSet *)indexes {
+    return [self.favoritePointsOfInterest objectsAtIndexes:indexes];
+}
+
+//These are the mutable accessor methods - KVC methods which allow insertion and deletion of elements from the pointOfInterestArray
+
+- (void) insertObject:(BLCPointOfInterest *)object inFavoritePointsOfInterestAtIndex:(NSUInteger)index {
+    [_favoritePointsOfInterest insertObject:object atIndex:index];
+}
+
+- (void) removeObjectFromFavoritePointsOfInterestAtIndex:(NSUInteger)index {
+    [_favoritePointsOfInterest removeObjectAtIndex:index];
+}
+
+- (void) replaceObjectInFavoritePointsOfInterestAtIndex:(NSUInteger)index withObject:(id)object {
+    [_favoritePointsOfInterest replaceObjectAtIndex:index withObject:object];
 }
 
 @end

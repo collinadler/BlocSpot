@@ -17,9 +17,10 @@
 - (void)addFavoritePointOfInterest:(BLCPointOfInterest *)poi;
 
 // Recents
-- (void) addPointOfInterest:(BLCPointOfInterest *)pointOfInterest;
+- (void) addRecentPointOfInterest:(BLCPointOfInterest *)poi;
 
-//publicly (to other classes), this will be a readonly property (meaning there is not setter method)
-@property (nonatomic, strong, readonly) NSArray *pointOfInterestArray;
+//publicly (to other classes), these will be a readonly properties (meaning there is not setter method)
+@property (nonatomic, strong, readonly) NSArray *recentPointsOfInterest;
+@property (nonatomic, strong, readonly) NSArray *favoritePointsOfInterest;
 
 @end

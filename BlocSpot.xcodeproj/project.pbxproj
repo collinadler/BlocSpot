@@ -18,6 +18,7 @@
 		27C582F81A396E6900491B0C /* BLCPointOfInterest.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C582F71A396E6900491B0C /* BLCPointOfInterest.m */; };
 		27C582FB1A396EFA00491B0C /* BLCCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C582FA1A396EFA00491B0C /* BLCCategory.m */; };
 		27C582FE1A3977D000491B0C /* BLCDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C582FD1A3977D000491B0C /* BLCDataSource.m */; };
+		27C583011A3B9D2B00491B0C /* BLCRecentPOITableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C583001A3B9D2B00491B0C /* BLCRecentPOITableViewCell.m */; };
 		27ECF0D91A37836100B2EEC2 /* BLCCustomAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 27ECF0D81A37836100B2EEC2 /* BLCCustomAnnotation.m */; };
 		27ECF0DB1A37902A00B2EEC2 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 27ECF0DA1A37902A00B2EEC2 /* Images.xcassets */; };
 /* End PBXBuildFile section */
@@ -56,6 +57,8 @@
 		27C582FA1A396EFA00491B0C /* BLCCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLCCategory.m; sourceTree = "<group>"; };
 		27C582FC1A3977D000491B0C /* BLCDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLCDataSource.h; sourceTree = "<group>"; };
 		27C582FD1A3977D000491B0C /* BLCDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLCDataSource.m; sourceTree = "<group>"; };
+		27C582FF1A3B9D2B00491B0C /* BLCRecentPOITableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLCRecentPOITableViewCell.h; sourceTree = "<group>"; };
+		27C583001A3B9D2B00491B0C /* BLCRecentPOITableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLCRecentPOITableViewCell.m; sourceTree = "<group>"; };
 		27ECF0D71A37836100B2EEC2 /* BLCCustomAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLCCustomAnnotation.h; sourceTree = "<group>"; };
 		27ECF0D81A37836100B2EEC2 /* BLCCustomAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLCCustomAnnotation.m; sourceTree = "<group>"; };
 		27ECF0DA1A37902A00B2EEC2 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -172,6 +175,8 @@
 			children = (
 				27C582F01A39090700491B0C /* BLCPOIMapDetailView.h */,
 				27C582F11A39090700491B0C /* BLCPOIMapDetailView.m */,
+				27C582FF1A3B9D2B00491B0C /* BLCRecentPOITableViewCell.h */,
+				27C583001A3B9D2B00491B0C /* BLCRecentPOITableViewCell.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -288,6 +293,7 @@
 				27C582F81A396E6900491B0C /* BLCPointOfInterest.m in Sources */,
 				27C582F21A39090700491B0C /* BLCPOIMapDetailView.m in Sources */,
 				27220D9B1A30E922009EC0D2 /* main.m in Sources */,
+				27C583011A3B9D2B00491B0C /* BLCRecentPOITableViewCell.m in Sources */,
 				27C582FB1A396EFA00491B0C /* BLCCategory.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

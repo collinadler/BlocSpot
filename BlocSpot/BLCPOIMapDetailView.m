@@ -32,6 +32,7 @@
         self.backgroundColor = [UIColor whiteColor];
         
         self.titleLabel = [[UILabel alloc] init];
+        self.titleLabel.adjustsFontSizeToFitWidth = YES;
         
         self.poiMarkerImageView = [[UIImageView alloc] init];
         

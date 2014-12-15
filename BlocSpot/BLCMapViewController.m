@@ -162,8 +162,8 @@ typedef NS_ENUM(NSInteger, BLCMapViewControllerState) {
     [self.searchController setActive:NO];
     
     BLCPointOfInterest *pointOfInterest = [[BLCPointOfInterest alloc] initWithMapItem:results.mapItems[indexPath.row]];
-//    [[BLCDataSource sharedInstance] addPointOfInterest:pointOfInterest];
-    
+    [[BLCDataSource sharedInstance] addRecentPointOfInterest:pointOfInterest];
+
     BLCCustomAnnotation *customAnnotation = [[BLCCustomAnnotation alloc] initWithPointOfInterest:pointOfInterest];
     
     [self.mapView addAnnotation:customAnnotation];
@@ -228,7 +228,8 @@ typedef NS_ENUM(NSInteger, BLCMapViewControllerState) {
 }
 
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
-
+    NSLog(@"Selected annotation");
+    
     //center mapview on the annotation
     BLCCustomAnnotation *customAnnotation = (BLCCustomAnnotation *)view.annotation;
     CLLocationCoordinate2D viewCoordinate = customAnnotation.coordinate;
@@ -238,6 +239,10 @@ typedef NS_ENUM(NSInteger, BLCMapViewControllerState) {
     self.popUpView.poi = customAnnotation.poi;
     
     [self setState:BLCMapViewControllerStatePOIDetail animated:YES];
+}
+
+- (void)mapView:(MKMapView *)mapView regionWillChangeAnimated:(BOOL)animated {
+    [self setState:BLCMapViewControllerStateMap animated:NO];
 }
 
 @end
