@@ -22,7 +22,7 @@ typedef NS_ENUM(NSInteger, BLCMapViewControllerState) {
     BLCMapViewControllerStatePOIDetail
 };
 
-@interface BLCMapViewController () <MKMapViewDelegate, UISearchResultsUpdating, UISearchBarDelegate, UISearchControllerDelegate, UITableViewDelegate>
+@interface BLCMapViewController () <MKMapViewDelegate, UISearchResultsUpdating, UISearchBarDelegate, UISearchControllerDelegate, UITableViewDelegate, BLCPOIMapDetailViewDelegate>
 
 @property (nonatomic, strong) UISearchController *searchController;
 
@@ -83,8 +83,14 @@ typedef NS_ENUM(NSInteger, BLCMapViewControllerState) {
         [self.mapView addAnnotation:annotation];
     }
     
+    for (BLCPointOfInterest *poi in [BLCDataSource sharedInstance].favoritePointsOfInterest) {
+        BLCCustomAnnotation *annotation = [[BLCCustomAnnotation alloc] initWithPointOfInterest:poi];
+        [self.mapView addAnnotation:annotation];
+    }
+    
     self.popUpView = [[BLCPOIMapDetailView alloc] init];
     self.popUpView.layer.cornerRadius = 6;
+    self.popUpView.delegate = self;
     
     [self.view addSubview:self.mapView];
     [self.view addSubview:self.popUpView];
@@ -168,6 +174,7 @@ typedef NS_ENUM(NSInteger, BLCMapViewControllerState) {
     
     BLCPointOfInterest *pointOfInterest = [[BLCPointOfInterest alloc] initWithMapItem:results.mapItems[indexPath.row]];
     [[BLCDataSource sharedInstance] addRecentPointOfInterest:pointOfInterest];
+    [[BLCDataSource sharedInstance] archiveRecentPOIData];
 
     BLCCustomAnnotation *customAnnotation = [[BLCCustomAnnotation alloc] initWithPointOfInterest:pointOfInterest];
     
@@ -248,6 +255,21 @@ typedef NS_ENUM(NSInteger, BLCMapViewControllerState) {
 
 - (void)mapView:(MKMapView *)mapView regionWillChangeAnimated:(BOOL)animated {
     [self setState:BLCMapViewControllerStateMap animated:NO];
+}
+
+#pragma mark - BLCPOIMapDetailViewDelegate
+
+- (void) shareButtonPressedOnDetailView:(BLCPOIMapDetailView *)detailView withSharedItems:(NSArray *)sharedItems {
+    UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:sharedItems applicationActivities:nil];
+    [self presentViewController:activityVC animated:YES completion:nil];
+}
+
+- (void) favoriteButtonPressedOnDetailView:(BLCPOIMapDetailView *)detailView {
+    [[BLCDataSource sharedInstance] toggleFavoriteOnPOI:detailView.poi];
+}
+
+- (void) deleteButtonPressedOnDetailView:(BLCPOIMapDetailView *)detailView {
+    [[BLCDataSource sharedInstance] deletePointOfInterest:detailView.poi];
 }
 
 @end

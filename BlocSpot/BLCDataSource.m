@@ -69,7 +69,6 @@
     NSMutableArray *mutableArrayWithKVO = [self mutableArrayValueForKey:@"recentPointsOfInterest"];
     [mutableArrayWithKVO addObject:poi];
     self.hasDataChanged = YES;
-    NSLog(@"%@", self.recentPointsOfInterest);
 }
 
 - (void) addFavoritePointOfInterest:(BLCPointOfInterest *)poi {
@@ -170,4 +169,55 @@
     return dataPath;
 }
 
+#pragma mark - Favoriting POIs
+
+- (void) toggleFavoriteOnPOI:(BLCPointOfInterest *)pointOfInterest {
+    if (pointOfInterest.favoriteState == BLCPOIFavoriteStateNotLiked) {
+
+        pointOfInterest.favoriteState = BLCPOIFavoriteStateLiked;
+        [self addFavoritePointOfInterest:pointOfInterest];
+        
+        //remove it from the recent POI array to prevent duplicate entries
+        NSMutableArray *mutableArrayWithKVO = [self mutableArrayValueForKey:@"recentPointsOfInterest"];
+        NSUInteger index = [mutableArrayWithKVO indexOfObject:pointOfInterest];
+        [mutableArrayWithKVO removeObjectAtIndex:index];        
+        
+    } else if (pointOfInterest.favoriteState == BLCPOIFavoriteStateLiked) {
+        
+        pointOfInterest.favoriteState = BLCPOIFavoriteStateNotLiked;
+        // TODO: remove this POI from the favorites array
+        
+    }
+}
+
+#pragma mark - Deleting POIs
+
+- (void) deletePointOfInterest:(BLCPointOfInterest *)pointOfInterest {
+    
+    NSMutableArray *mutableRecentArrayWithKVO = [self mutableArrayValueForKey:@"recentPointsOfInterest"];
+    NSMutableArray *mutableFavoriteArayWithKVO = [self mutableArrayValueForKey:@"favoritePointsOfInterest"];
+
+    if ([mutableRecentArrayWithKVO containsObject:pointOfInterest]) {
+        NSUInteger index = [mutableRecentArrayWithKVO indexOfObject:pointOfInterest];
+        [mutableRecentArrayWithKVO removeObjectAtIndex:index];
+    } else if ([mutableFavoriteArayWithKVO containsObject:pointOfInterest]) {
+        NSUInteger index = [mutableFavoriteArayWithKVO indexOfObject:pointOfInterest];
+        [mutableFavoriteArayWithKVO removeObjectAtIndex:index];
+    }
+}
+
 @end
+
+
+
+
+
+
+
+
+
+
+
+
+
+

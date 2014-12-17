@@ -22,6 +22,11 @@
 // Archive methods
 - (void) archiveRecentPOIData;
 
+// Toggle favorite on a POI
+- (void) toggleFavoriteOnPOI:(BLCPointOfInterest *)pointOfInterest;
+
+// Delete a POI
+- (void) deletePointOfInterest:(BLCPointOfInterest *)pointOfInterest;
 
 //publicly (to other classes), these will be a readonly properties (meaning there is not setter method)
 @property (nonatomic, strong, readonly) NSArray *recentPointsOfInterest;

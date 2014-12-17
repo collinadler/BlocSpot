@@ -101,9 +101,10 @@
         recentCell.pointOfInterest = [BLCDataSource sharedInstance].recentPointsOfInterest[indexPath.row];
         return recentCell;
     } else {
-        //TODO: Set up favorite cells
-        UITableViewCell *cell;
-        return cell;
+        BLCRecentPOITableViewCell *recentCell = [tableView dequeueReusableCellWithIdentifier:@"recentPOICell"
+                                                                                forIndexPath:indexPath];
+        recentCell.pointOfInterest = [BLCDataSource sharedInstance].favoritePointsOfInterest[indexPath.row];
+        return recentCell;
     }
 }
 

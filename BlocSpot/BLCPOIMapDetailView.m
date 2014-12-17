@@ -9,6 +9,9 @@
 #import "BLCPOIMapDetailView.h"
 #import "BLCPointOfInterest.h"
 
+#define kFavoriteStateImage @"heart-full"
+#define kUnfavoriteStateImage @"heart-empty"
+
 @interface BLCPOIMapDetailView ()
 
 @property (nonatomic, strong) UILabel *titleLabel;
@@ -48,19 +51,26 @@
         
         self.navigateButton = [UIButton buttonWithType:UIButtonTypeSystem];
         [self.navigateButton setImage:[UIImage imageNamed:@"nav"] forState:UIControlStateNormal];
-        //TODO: Add Target
+        [self.navigateButton addTarget:self
+                                action:@selector(navigateButtonPressed:)
+                      forControlEvents:UIControlEventTouchUpInside];
         
         self.shareButton = [UIButton buttonWithType:UIButtonTypeSystem];
         [self.shareButton setImage:[UIImage imageNamed:@"share"] forState:UIControlStateNormal];
-        //TODO: Add Target
+        [self.shareButton addTarget:self
+                             action:@selector(shareButtonPressed:)
+                   forControlEvents:UIControlEventTouchUpInside];
         
         self.deleteButton = [UIButton buttonWithType:UIButtonTypeSystem];
         [self.deleteButton setImage:[UIImage imageNamed:@"delete"] forState:UIControlStateNormal];
-        //TODO: Add Target
-
+        [self.deleteButton addTarget:self
+                              action:@selector(deleteButtonPressed:)
+                    forControlEvents:UIControlEventTouchUpInside];
+        
         self.favoriteButton = [UIButton buttonWithType:UIButtonTypeSystem];
-        [self.favoriteButton setImage:[UIImage imageNamed:@"heart-empty"] forState:UIControlStateNormal];
-        //TODO: Add Target
+        [self.favoriteButton addTarget:self
+                                action:@selector(favoriteButtonPressed:)
+                      forControlEvents:UIControlEventTouchUpInside];
         
         for (UIView *view in @[self.titleLabel, self.poiMarkerImageView, self.lineDividerView, self.noteLabel, self.categoryLabel, self.navigateButton, self.shareButton, self.deleteButton, self.favoriteButton]) {
             [self addSubview:view];
@@ -92,18 +102,28 @@
     self.favoriteButton.frame = CGRectMake(CGRectGetMinX(self.navigateButton.frame) - buttonSize, CGRectGetMinY(self.deleteButton.frame), buttonSize, buttonSize);
 }
 
+- (void) setFavoriteButtonState:(BLCPOIFavoriteState)favoriteButtonState {
+    _favoriteButtonState = favoriteButtonState;
+    
+    NSString *imageName;
+    
+    switch (_favoriteButtonState) {
+        case BLCPOIFavoriteStateLiked:
+            imageName = kFavoriteStateImage;
+            break;
+            
+        case BLCPOIFavoriteStateNotLiked:
+            imageName = kUnfavoriteStateImage;
+    }
+    [self.favoriteButton setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
+}
+
 #pragma mark - Overrides
 
 - (void)setPoi:(BLCPointOfInterest *)poi {
     _poi = poi;
     self.titleLabel.text = _poi.name;
-    
-    if (!_poi.visitedState) {
-        self.poiMarkerImageView.image = [UIImage imageNamed:@"yellow"];
-    } else {
-        self.poiMarkerImageView.image = [UIImage imageNamed:@"red"];
-    }
-    
+    self.poiMarkerImageView.image = [UIImage imageNamed:@"yellow"];
     if (!_poi.note) {
         self.noteLabel.text = @"No notes for this location";
     } else {
@@ -115,6 +135,9 @@
     } else {
 //TODO: Create a category based on category data
     }
+    
+    self.favoriteButtonState = _poi.favoriteState;
+    
 }
 
 
@@ -134,6 +157,37 @@
     self.categoryLabel.attributedText = mutableCategoryString;
     return self.categoryLabel;
 }
+
+#pragma mark - Detail View Buttons
+
+- (void) navigateButtonPressed:(UIButton *)sender {
+    
+}
+
+- (void) shareButtonPressed:(UIButton *)sender {
+    NSMutableArray *itemsToShare = [NSMutableArray array];
+    
+    if (self.poi.name) {
+        [itemsToShare addObject:self.poi.name];
+    }
+    
+    if (self.poi.note) {
+        [itemsToShare addObject:self.poi.note];
+    }
+    
+    if (itemsToShare.count > 0) {
+        [self.delegate shareButtonPressedOnDetailView:self withSharedItems:itemsToShare];
+    }
+}
+
+- (void) deleteButtonPressed:(UIButton *)sender {
+    [self.delegate deleteButtonPressedOnDetailView:self];
+}
+
+- (void) favoriteButtonPressed:(UIButton *)sender {
+    [self.delegate favoriteButtonPressedOnDetailView:self];
+}
+
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.

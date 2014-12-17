@@ -34,7 +34,13 @@
     
     annotationView.enabled = YES;
     annotationView.canShowCallout = NO;
-    annotationView.image = [UIImage imageNamed:@"yellow"];
+//    annotationView.image = [UIImage imageNamed:@"yellow"];
+    
+    if (self.poi.favoriteState == BLCPOIFavoriteStateNotLiked) {
+        annotationView.image = [UIImage imageNamed:@"yellow"];
+    } else if (self.poi.favoriteState == BLCPOIFavoriteStateLiked) {
+        annotationView.image = [UIImage imageNamed:@"red"];
+    }
     
     return annotationView;
 }
