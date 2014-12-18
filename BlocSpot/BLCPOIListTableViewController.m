@@ -8,13 +8,26 @@
 
 #import "BLCPOIListTableViewController.h"
 #import "BLCMapViewController.h"
+#import "BLCDataSource.h"
+#import "BLCRecentPOITableViewCell.h"
+#import "BLCEditNoteViewController.h"
 
-@interface BLCPOIListTableViewController ()
+@interface BLCPOIListTableViewController () <UIActionSheetDelegate>
 
+@property (nonatomic, strong) NSIndexPath *currentIndexPath;
 
 @end
 
 @implementation BLCPOIListTableViewController
+
+- (id) init {
+    self = [super init];
+    
+    if (self) {
+        //custom initialization
+    }
+    return self;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -40,7 +53,8 @@
                                                                  action:@selector(mapPressed:)];
     self.navigationItem.leftBarButtonItem = mapButton;
     
-    
+    [self.tableView registerClass:[BLCRecentPOITableViewCell class]
+           forCellReuseIdentifier:@"recentPOICell"];
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -57,26 +71,94 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-#warning Potentially incomplete method implementation.
-    // Return the number of sections.
-    return 0;
+    
+    NSInteger numberOfSections = 0;
+    
+    if ([[BLCDataSource sharedInstance] favoritePointsOfInterest].count > 0) {
+        numberOfSections++;
+    }
+    if ([[BLCDataSource sharedInstance] recentPointsOfInterest].count > 0) {
+        numberOfSections++;
+    }
+
+    return numberOfSections;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-#warning Incomplete method implementation.
-    // Return the number of rows in the section.
+
+    if (section == 0) {
+        return [[BLCDataSource sharedInstance] recentPointsOfInterest].count;
+    } else if (section == 1) {
+        return [[BLCDataSource sharedInstance] favoritePointsOfInterest].count;
+    }
     return 0;
 }
 
-/*
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
     
-    // Configure the cell...
-    
-    return cell;
+    if (indexPath.section == 0) {
+        BLCRecentPOITableViewCell *recentCell = [tableView dequeueReusableCellWithIdentifier:@"recentPOICell"
+                                                                                forIndexPath:indexPath];
+        recentCell.pointOfInterest = [BLCDataSource sharedInstance].recentPointsOfInterest[indexPath.row];
+        return recentCell;
+    } else {
+        BLCRecentPOITableViewCell *recentCell = [tableView dequeueReusableCellWithIdentifier:@"recentPOICell"
+                                                                                forIndexPath:indexPath];
+        recentCell.pointOfInterest = [BLCDataSource sharedInstance].favoritePointsOfInterest[indexPath.row];
+        return recentCell;
+    }
 }
-*/
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    if (section == 0) {
+        return @"Recent Points of Interest";
+    } else {
+        return @"Favorite Points of Interest";
+    }
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    BLCPointOfInterest *poi = [BLCDataSource sharedInstance].recentPointsOfInterest[indexPath.row];
+    return [BLCRecentPOITableViewCell heightForRecentPOI:poi width:CGRectGetWidth(self.view.frame)];
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+
+    UIActionSheet *cellActionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                                 delegate:self
+                                                        cancelButtonTitle:@"Cancel"
+                                                   destructiveButtonTitle:@"Delete Point of Interest"
+                                                        otherButtonTitles:@"Choose Category", @"Edit note", nil];
+    self.currentIndexPath = indexPath;
+    [cellActionSheet showInView:self.view];
+    
+}
+
+#pragma mark - UIActionSheetDelegate
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 0) {
+
+        //get the cell that the action sheet pertains to
+        BLCRecentPOITableViewCell *cell = (BLCRecentPOITableViewCell *)[self.tableView cellForRowAtIndexPath:self.currentIndexPath];
+
+        //delete the row from the table and the data from the datasource
+        [[BLCDataSource sharedInstance] deletePointOfInterest:cell.pointOfInterest];
+        [self.tableView deleteRowsAtIndexPaths:@[self.currentIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+        
+    } else if (buttonIndex == 1) {
+        NSLog(@"Hit choose category button");
+    } else if (buttonIndex == 2) {
+        
+        BLCRecentPOITableViewCell *cell = (BLCRecentPOITableViewCell *)[self.tableView cellForRowAtIndexPath:self.currentIndexPath];
+        BLCEditNoteViewController *editVC = [[BLCEditNoteViewController alloc] initWithPOI:cell.pointOfInterest];
+        [self presentViewController:editVC animated:YES completion:nil];
+        
+    } else if (buttonIndex == 3) {
+        NSLog(@"Hit cancel button");
+    }
+}
 
 /*
 // Override to support conditional editing of the table view.
