@@ -41,6 +41,15 @@ typedef NS_ENUM(NSInteger, BLCMapViewControllerState) {
     MKLocalSearchResponse *results;
 }
 
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        //***** Right now you are just racing between initializing the BLCDataSource and adding the annotations. You could set up a KVO or notif center so that, after loading the BLCDatasource, then the annotations are added. 
+        [BLCDataSource sharedInstance];
+    }
+    return self;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
 
@@ -78,16 +87,6 @@ typedef NS_ENUM(NSInteger, BLCMapViewControllerState) {
     self.mapView.showsPointsOfInterest = NO;
     self.mapView.delegate = self;
     
-    for (BLCPointOfInterest *poi in [BLCDataSource sharedInstance].recentPointsOfInterest) {
-        BLCCustomAnnotation *annotation = [[BLCCustomAnnotation alloc] initWithPointOfInterest:poi];
-        [self.mapView addAnnotation:annotation];
-    }
-    
-    for (BLCPointOfInterest *poi in [BLCDataSource sharedInstance].favoritePointsOfInterest) {
-        BLCCustomAnnotation *annotation = [[BLCCustomAnnotation alloc] initWithPointOfInterest:poi];
-        [self.mapView addAnnotation:annotation];
-    }
-    
     self.popUpView = [[BLCPOIMapDetailView alloc] init];
     self.popUpView.layer.cornerRadius = 6;
     self.popUpView.delegate = self;
@@ -99,6 +98,20 @@ typedef NS_ENUM(NSInteger, BLCMapViewControllerState) {
 
 - (void) viewWillLayoutSubviews {
     [self layoutViews];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    for (BLCPointOfInterest *poi in [BLCDataSource sharedInstance].recentPointsOfInterest) {
+        BLCCustomAnnotation *annotation = [[BLCCustomAnnotation alloc] initWithPointOfInterest:poi];
+        [self.mapView addAnnotation:annotation];
+    }
+    
+    for (BLCPointOfInterest *poi in [BLCDataSource sharedInstance].favoritePointsOfInterest) {
+        BLCCustomAnnotation *annotation = [[BLCCustomAnnotation alloc] initWithPointOfInterest:poi];
+        [self.mapView addAnnotation:annotation];
+    }
 }
 
 - (void)layoutViews {

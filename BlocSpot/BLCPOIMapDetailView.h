@@ -28,6 +28,5 @@ typedef NS_ENUM(NSInteger, BLCPOIFavoriteState) {
 
 @property (nonatomic, strong) BLCPointOfInterest *poi;
 @property (nonatomic, weak) id <BLCPOIMapDetailViewDelegate> delegate;
-@property (nonatomic, assign) BLCPOIFavoriteState favoriteButtonState;
 
 @end

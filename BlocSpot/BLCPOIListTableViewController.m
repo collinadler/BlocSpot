@@ -10,9 +10,11 @@
 #import "BLCMapViewController.h"
 #import "BLCDataSource.h"
 #import "BLCRecentPOITableViewCell.h"
+#import "BLCEditNoteViewController.h"
 
-@interface BLCPOIListTableViewController ()
+@interface BLCPOIListTableViewController () <UIActionSheetDelegate>
 
+@property (nonatomic, strong) NSIndexPath *currentIndexPath;
 
 @end
 
@@ -119,6 +121,43 @@
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     BLCPointOfInterest *poi = [BLCDataSource sharedInstance].recentPointsOfInterest[indexPath.row];
     return [BLCRecentPOITableViewCell heightForRecentPOI:poi width:CGRectGetWidth(self.view.frame)];
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+
+    UIActionSheet *cellActionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                                 delegate:self
+                                                        cancelButtonTitle:@"Cancel"
+                                                   destructiveButtonTitle:@"Delete Point of Interest"
+                                                        otherButtonTitles:@"Choose Category", @"Edit note", nil];
+    self.currentIndexPath = indexPath;
+    [cellActionSheet showInView:self.view];
+    
+}
+
+#pragma mark - UIActionSheetDelegate
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 0) {
+
+        //get the cell that the action sheet pertains to
+        BLCRecentPOITableViewCell *cell = (BLCRecentPOITableViewCell *)[self.tableView cellForRowAtIndexPath:self.currentIndexPath];
+
+        //delete the row from the table and the data from the datasource
+        [[BLCDataSource sharedInstance] deletePointOfInterest:cell.pointOfInterest];
+        [self.tableView deleteRowsAtIndexPaths:@[self.currentIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+        
+    } else if (buttonIndex == 1) {
+        NSLog(@"Hit choose category button");
+    } else if (buttonIndex == 2) {
+        
+        BLCRecentPOITableViewCell *cell = (BLCRecentPOITableViewCell *)[self.tableView cellForRowAtIndexPath:self.currentIndexPath];
+        BLCEditNoteViewController *editVC = [[BLCEditNoteViewController alloc] initWithPOI:cell.pointOfInterest];
+        [self presentViewController:editVC animated:YES completion:nil];
+        
+    } else if (buttonIndex == 3) {
+        NSLog(@"Hit cancel button");
+    }
 }
 
 /*

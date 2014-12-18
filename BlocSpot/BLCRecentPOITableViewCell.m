@@ -30,6 +30,7 @@
         
         self.titleLabel = [[UILabel alloc] init];
         self.titleLabel.numberOfLines = 1;
+        self.titleLabel.adjustsFontSizeToFitWidth = YES;
         self.titleLabel.backgroundColor = [UIColor clearColor];
         
         self.noteLabel = [[UILabel alloc] init];
@@ -44,6 +45,8 @@
         
         for (UIView *view in @[self.titleLabel, self.noteLabel, self.categoryLabel, self.distanceLabel]) {
             [self.contentView addSubview:view];
+//            view.layer.borderColor = [UIColor blackColor].CGColor;
+//            view.layer.borderWidth = 1.0;
         }
     }
     return self;
@@ -60,7 +63,7 @@
     CGSize noteLabelSize = [self.noteLabel sizeThatFits:maxNoteLabelSize];
     
     self.categoryLabel.frame = CGRectMake(padding, padding, categoryLabelSize, categoryLabelSize);
-    self.titleLabel.frame = CGRectMake(CGRectGetMaxX(self.categoryLabel.frame) + padding, padding, CGRectGetWidth(self.bounds) - CGRectGetWidth(self.categoryLabel.frame) - padding - padding, categoryLabelSize);
+    self.titleLabel.frame = CGRectMake(CGRectGetMaxX(self.categoryLabel.frame) + padding, padding, CGRectGetWidth(self.contentView.frame) - CGRectGetWidth(self.categoryLabel.frame) - padding - padding, categoryLabelSize);
     self.distanceLabel.frame = CGRectMake(padding, CGRectGetMaxY(self.categoryLabel.frame) + padding, categoryLabelSize, 15); //TODO: Make not a constant
     self.noteLabel.frame = CGRectMake(CGRectGetMinX(self.titleLabel.frame), CGRectGetMinY(self.distanceLabel.frame), CGRectGetWidth(self.titleLabel.frame), noteLabelSize.height);
 }
@@ -70,7 +73,7 @@
     self.titleLabel.text = _pointOfInterest.name;
     
     if (!self.noteLabel.text) {
-        self.noteLabel.text = @"No notes set for this location check double line length for spacing";
+        self.noteLabel.text = @"No label set.";
     } else {
         self.noteLabel.text = _pointOfInterest.note;
     }

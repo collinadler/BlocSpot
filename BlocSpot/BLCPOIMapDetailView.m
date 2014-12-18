@@ -102,22 +102,6 @@
     self.favoriteButton.frame = CGRectMake(CGRectGetMinX(self.navigateButton.frame) - buttonSize, CGRectGetMinY(self.deleteButton.frame), buttonSize, buttonSize);
 }
 
-- (void) setFavoriteButtonState:(BLCPOIFavoriteState)favoriteButtonState {
-    _favoriteButtonState = favoriteButtonState;
-    
-    NSString *imageName;
-    
-    switch (_favoriteButtonState) {
-        case BLCPOIFavoriteStateLiked:
-            imageName = kFavoriteStateImage;
-            break;
-            
-        case BLCPOIFavoriteStateNotLiked:
-            imageName = kUnfavoriteStateImage;
-    }
-    [self.favoriteButton setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
-}
-
 #pragma mark - Overrides
 
 - (void)setPoi:(BLCPointOfInterest *)poi {
@@ -136,7 +120,7 @@
 //TODO: Create a category based on category data
     }
     
-    self.favoriteButtonState = _poi.favoriteState;
+    [self updateFavoriteButton];
     
 }
 
@@ -185,7 +169,22 @@
 }
 
 - (void) favoriteButtonPressed:(UIButton *)sender {
-    [self.delegate favoriteButtonPressedOnDetailView:self];
+    [self.delegate favoriteButtonPressedOnDetailView:self]; //could add completion hander and then update button when it completes
+    [self updateFavoriteButton];
+}
+
+- (void) updateFavoriteButton {
+    NSString *imageName;
+    
+    switch (self.poi.favoriteState) {
+        case BLCPOIFavoriteStateLiked:
+            imageName = kFavoriteStateImage;
+            break;
+            
+        case BLCPOIFavoriteStateNotLiked:
+            imageName = kUnfavoriteStateImage;
+    }
+    [self.favoriteButton setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
 }
 
 /*

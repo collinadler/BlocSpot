@@ -19,6 +19,7 @@
 		27C582FB1A396EFA00491B0C /* BLCCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C582FA1A396EFA00491B0C /* BLCCategory.m */; };
 		27C582FE1A3977D000491B0C /* BLCDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C582FD1A3977D000491B0C /* BLCDataSource.m */; };
 		27C583011A3B9D2B00491B0C /* BLCRecentPOITableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C583001A3B9D2B00491B0C /* BLCRecentPOITableViewCell.m */; };
+		27C583041A422EB700491B0C /* BLCEditNoteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C583031A422EB700491B0C /* BLCEditNoteViewController.m */; };
 		27ECF0D91A37836100B2EEC2 /* BLCCustomAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 27ECF0D81A37836100B2EEC2 /* BLCCustomAnnotation.m */; };
 		27ECF0DB1A37902A00B2EEC2 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 27ECF0DA1A37902A00B2EEC2 /* Images.xcassets */; };
 /* End PBXBuildFile section */
@@ -59,6 +60,8 @@
 		27C582FD1A3977D000491B0C /* BLCDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLCDataSource.m; sourceTree = "<group>"; };
 		27C582FF1A3B9D2B00491B0C /* BLCRecentPOITableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLCRecentPOITableViewCell.h; sourceTree = "<group>"; };
 		27C583001A3B9D2B00491B0C /* BLCRecentPOITableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLCRecentPOITableViewCell.m; sourceTree = "<group>"; };
+		27C583021A422EB700491B0C /* BLCEditNoteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLCEditNoteViewController.h; sourceTree = "<group>"; };
+		27C583031A422EB700491B0C /* BLCEditNoteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLCEditNoteViewController.m; sourceTree = "<group>"; };
 		27ECF0D71A37836100B2EEC2 /* BLCCustomAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLCCustomAnnotation.h; sourceTree = "<group>"; };
 		27ECF0D81A37836100B2EEC2 /* BLCCustomAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLCCustomAnnotation.m; sourceTree = "<group>"; };
 		27ECF0DA1A37902A00B2EEC2 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -151,6 +154,8 @@
 				27B58B511A329E7500285352 /* BLCPOIListTableViewController.m */,
 				27B58B5C1A35731C00285352 /* BLCResultsTableViewController.h */,
 				27B58B5D1A35731C00285352 /* BLCResultsTableViewController.m */,
+				27C583021A422EB700491B0C /* BLCEditNoteViewController.h */,
+				27C583031A422EB700491B0C /* BLCEditNoteViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -286,6 +291,7 @@
 			files = (
 				27220D9E1A30E922009EC0D2 /* AppDelegate.m in Sources */,
 				27220DC31A30F595009EC0D2 /* BLCMapViewController.m in Sources */,
+				27C583041A422EB700491B0C /* BLCEditNoteViewController.m in Sources */,
 				27C582FE1A3977D000491B0C /* BLCDataSource.m in Sources */,
 				27B58B5E1A35731C00285352 /* BLCResultsTableViewController.m in Sources */,
 				27ECF0D91A37836100B2EEC2 /* BLCCustomAnnotation.m in Sources */,
